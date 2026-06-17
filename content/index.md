@@ -1,6 +1,6 @@
 ---
 title: Where are we ?
-----
+---
 
 <img src="./banner.png" alt="Garden Banner" class="index-banner" />
 
