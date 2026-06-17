@@ -7,27 +7,27 @@ title: Where are we ?
 
 <div class="index-content-box">
 
-Hi, my name is Shubham (aka Shubh). I'm an undergraduate Computer Science student from [[Pune, India.]]
+Hi, my name is Shubham (aka Shubh). I'm an undergraduate [[Computer Science]] student from [Pune, India](https://en.wikipedia.org/wiki/Pune).
 
-Welcome to my digital garden—a place where I collect ideas, document what I'm learning, and explore the endless conversations happening inside my head. This garden serves as both a notebook and a playground, helping me visualize thoughts, connect concepts, and refine ideas over time.
+Welcome to my [[digital garden]] —a place where I collect ideas, document what I'm learning, and explore the endless conversations happening inside my head. This garden serves as both a notebook and a playground, helping me visualize thoughts, connect concepts, and refine ideas over time.
 
 My interests span across computers, mathematics, science, space, and anything that sparks curiosity. I've always preferred understanding how things work rather than simply accepting that they do. That curiosity is what led me into computer science and continues to drive much of what I learn and build.
 
-I spend a lot of my time exploring systems, infrastructure, and software engineering. Most days you'll find me tinkering with configurations (I use Arch Linux and Neovim, by the way), breaking things intentionally, and figuring out why they broke in the first place. I enjoy understanding systems from the ground up and learning what makes good software and reliable infrastructure.
+I spend a lot of my time exploring systems, infrastructure, and software engineering. Most days you'll find me tinkering with configurations (I use [[Arch Linux]] and [[Neovim]], by the way), breaking things intentionally, and figuring out why they broke in the first place. I enjoy understanding systems from the ground up and learning what makes good software and reliable infrastructure.
 
-I've worked on projects primarily in Rust and C++, while also exploring other languages and frameworks. More recently, I've been using Go to deepen my understanding of backend engineering and TypeScript to broaden my web development experience. I also contribute to open-source projects that I use regularly and strongly believe in the philosophy of open-source software. Alongside this, I enjoy competitive programming, where every problem teaches me a new way of thinking.
+I've worked on projects primarily in [[Rust]] and [[C++]], while also exploring other languages and frameworks. More recently, I've been using [[Go]] to deepen my understanding of [[backend engineering]] and [[TypeScript]] to broaden my [[web development]] experience. I also contribute to [[open-source]] projects that I use regularly and strongly believe in the philosophy of [[open-source]] software. Alongside this, I enjoy [[competitive programming,]] where every problem teaches me a new way of thinking.
 
-A large portion of my life revolves around knowledge management. I maintain a "second brain" built with Obsidian, and this digital garden is only a small window into that larger network of notes, ideas, and experiments. The system is heavily inspired by Andrej Karpathy's concept of an AI-assisted knowledge base, where tools help reduce friction between thinking and creating. My vault also acts as a memory layer for personal AI projects, including Kathy, an AI companion that I use to experiment with more natural and useful workflows.
+A large portion of my life revolves around knowledge management. I maintain a "[[second brain]]" built with [Obsidian](https://obsidian.md/), and this [[digital garden]] is only a small window into that larger network of notes, ideas, and experiments. The system is heavily inspired by [Andrej Karpathy](https://github.com/karpathy)'s concept of an [[AI-assisted knowledge base]], where tools help reduce friction between thinking and creating. My vault also acts as a memory layer for personal AI projects, including [[Kathy]], an AI companion that I use to experiment with more natural and useful workflows.
 
-Outside of computing, I enjoy photography. I like capturing moments that remind me why life is worth paying attention to. I'm also deeply fascinated by space exploration and astronomy. Looking up at the night sky has always been a humbling experience—a reminder that we're all living on a small rock drifting through an unimaginably vast universe. Carl Sagan expressed this feeling beautifully in his reflection on the Pale Blue Dot:
+Outside of computing, I enjoy [[photography]]. I like capturing moments that remind me why life is worth paying attention to. I'm also deeply fascinated by space exploration and astronomy. Looking up at the night sky has always been a humbling experience—a reminder that we're all living on a small rock drifting through an unimaginably vast universe. [Carl Sagan](https://science.nasa.gov/people/carl-sagan/) expressed this feeling beautifully in his reflection on the [Pale Blue Dot](https://science.nasa.gov/mission/voyager/voyager-1s-pale-blue-dot/):
 
-> "Look again at that dot. That's here. That's home. That's us."
+> ["Look again at that dot. That's here. That's home. That's us."](https://www.youtube.com/watch?v=pQobd6o3ujU)
 
-I've also spent time exploring graphic design and digital art, particularly through photo manipulation and visual storytelling. For me, art is another way of understanding the world and expressing ideas that are difficult to put into words.
+I've also spent time exploring [[graphic design]] and [[digital art]], particularly through photo manipulation and visual storytelling. For me, art is another way of understanding the world and expressing ideas that are difficult to put into words.
 
-As a person, I would describe myself as curious, social, and empathetic. Philosophically, I lean toward agnosticism and nihilism, though I'm always open to questioning my beliefs. I love music, and you'll rarely find me without headphones on or listening to something through my Sony Walkman.
+As a person, I would describe myself as curious, social, and empathetic. [[Philosophically]], I lean toward [[agnosticism]] and [[nihilism]], though I'm always open to questioning my beliefs. I love [[music]], and you'll rarely find me without headphones on or listening to something through my [[Sony Walkman]].
 
-I hope this digital garden gives you a glimpse into how I think, what I care about, and the things I'm currently exploring.
+I hope this [[digital garden]] gives you a glimpse into how I think, what I care about, and the things I'm currently exploring.
 
 ## Source Vault
 
