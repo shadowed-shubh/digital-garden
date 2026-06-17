@@ -1,3 +1,271 @@
 @use "./variables.scss" as *;
 
-// put your custom CSS here!
+// ── Part 1: Color theme overrides ──
+[saved-theme="dark"] {
+  body {
+    background-color: #023671 !important;
+    color: #3896ed !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #0197d6 !important;
+  }
+
+  a {
+    color: #af96dc !important;
+    &:hover {
+      color: #c4b3e8 !important;
+    }
+  }
+
+  // Unified Container Styles
+  .graph-outer,
+  .global-graph-container,
+  .explorer,
+  .toc,
+  .search .search-popup,
+  pre,
+  code,
+  .callout,
+  .note-properties,
+  blockquote {
+    background-color: #071e2c !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid #0a2940 !important;
+    border-radius: 8px !important;
+  }
+
+  .explorer, .toc, .graph-outer {
+    padding: 1rem;
+  }
+}
+
+// ── Part 2: Homepage layout ──
+body[data-slug="index"] {
+  .page {
+    max-width: 1400px;
+  }
+
+  #quartz-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "gh gh"
+      "gc gc"
+      "gl gr"
+      "gf gf";
+    column-gap: 3rem;
+
+    & > .page-header {
+      grid-area: gh;
+      margin-top: 2rem;
+      .page-title { display: none; }
+      .flex-component[data-group="toolbar"] {
+        justify-content: center;
+        width: 100%;
+      }
+    }
+
+    & > .center {
+      grid-area: gc;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    & > .sidebar.left {
+      grid-area: gl;
+      display: block;
+      position: relative;
+      height: auto;
+      padding: 0;
+      .graph-outer { height: 500px; }
+    }
+
+    & > .sidebar.right {
+      grid-area: gr;
+      display: block;
+      position: relative;
+      height: auto;
+      padding: 0;
+      
+      // Remove duplicate components that might be here
+      .page-title, .flex-component[data-group="toolbar"] {
+        display: none !important;
+      }
+    }
+    
+    & > footer { grid-area: gf; }
+  }
+
+  // Banner styling
+  .index-banner {
+    grid-area: gc;
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin: 1rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #071e2c 0%, #0a2940 100%);
+    border: 1px solid #0a2940;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: "Garden Banner Placeholder";
+      color: #1e4d7a;
+      font-family: var(--headerFont);
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+  }
+
+  // Centered heading
+  .index-heading {
+    text-align: center;
+    font-size: 3.5rem !important;
+    color: #0197d6 !important;
+    margin: 1rem 0 3rem !important;
+    font-weight: 800;
+    width: 100%;
+  }
+
+  @media all and ($mobile) {
+    #quartz-body {
+      grid-template-columns: 1fr;
+      grid-template-areas: "gh" "gc" "gl" "gr" "gf";
+    }
+    .index-heading { font-size: 2.5rem !important; }
+  }
+}
+
+// ── Part 3: Lorenz Background Slider ──
+.lorenz-controls {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1100; // Increased to ensure it's above everything
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+
+  .controls-handle {
+    width: 32px;
+    height: 64px;
+    background: rgba(7, 30, 44, 0.9);
+    border: 1px solid #0a2940;
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
+    opacity: 0.6;
+    
+    &::after {
+      content: "⟨";
+      color: #af96dc;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    &:hover {
+      opacity: 1;
+      width: 40px;
+      background: #071e2c;
+    }
+  }
+
+  .controls-panel {
+    width: 0;
+    height: auto;
+    overflow: hidden;
+    background: #071e2c;
+    border: 1px solid #0a2940;
+    border-right: none;
+    border-radius: 12px 0 0 12px;
+    padding: 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: auto;
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.6);
+  }
+
+  &.active .controls-panel,
+  &:hover .controls-panel {
+    width: 260px;
+    padding: 1.5rem;
+  }
+
+  &.active .controls-handle,
+  &:hover .controls-handle {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .control-group {
+    margin-bottom: 1.2rem;
+    &:last-child { margin-bottom: 0; }
+    
+    label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #0197d6;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      background: #0a2940;
+      border-radius: 3px;
+      outline: none;
+      accent-color: #af96dc;
+      cursor: pointer;
+    }
+    
+    .value-display {
+      font-family: var(--codeFont);
+      font-size: 0.75rem;
+      color: #3896ed;
+      background: rgba(56, 150, 237, 0.1);
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+    }
+  }
+}
+
+@media all and ($mobile) {
+  .lorenz-controls {
+    top: auto;
+    bottom: 2rem;
+    right: 1rem;
+    transform: none;
+    
+    .controls-handle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border-right: 1px solid #0a2940;
+      opacity: 0.9;
+      &::after { content: "⚙"; }
+    }
+    
+    &.active .controls-panel {
+      width: 280px;
+      position: fixed;
+      bottom: 6rem;
+      right: 1rem;
+      border-radius: 12px;
+      border-right: 1px solid #0a2940;
+    }
+  }
+}

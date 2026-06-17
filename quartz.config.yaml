@@ -31,15 +31,15 @@ configuration:
         highlight: rgba(143, 159, 169, 0.15)
         textHighlight: "#fff23688"
       darkMode:
-        light: "#161618"
-        lightgray: "#393639"
-        gray: "#646464"
-        darkgray: "#d4d4d4"
-        dark: "#ebebec"
-        secondary: "#7b97aa"
-        tertiary: "#84a59d"
-        highlight: rgba(143, 159, 169, 0.15)
-        textHighlight: "#b3aa0288"
+        light: "#023671"
+        lightgray: "#071e2c"
+        gray: "#0a2940"
+        darkgray: "#3896ed"
+        dark: "#0197d6"
+        secondary: "#af96dc"
+        tertiary: "#af96dc"
+        highlight: rgba(175, 150, 220, 0.15)
+        textHighlight: "#af96dc44"
 plugins:
   - source: github:quartz-community/created-modified-date
     enabled: true
@@ -145,12 +145,12 @@ plugins:
   - source: github:quartz-community/explorer
     enabled: true
     layout:
-      position: left
+      position: right
       priority: 50
   - source: github:quartz-community/graph
     enabled: true
     layout:
-      position: right
+      position: left
       priority: 10
   - source: github:quartz-community/search
     enabled: true
@@ -230,6 +230,11 @@ plugins:
     enabled: true
     options: {}
     order: 50
+  - source: ./plugins/lorenz-background
+    enabled: true
+    layout:
+      position: afterBody
+      priority: 1
   - source: github:quartz-community/note-properties
     enabled: true
     options:

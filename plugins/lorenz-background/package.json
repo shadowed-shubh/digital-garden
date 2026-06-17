@@ -1,0 +1,22 @@
+{
+  "name": "lorenz-background",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "main": "./index.ts",
+  "quartz": {
+    "name": "lorenz-background",
+    "displayName": "Lorenz Background",
+    "category": "component",
+    "components": {
+      "LorenzBackground": {
+        "name": "LorenzBackground",
+        "displayName": "Lorenz Background",
+        "version": "1.0.0"
+      }
+    }
+  }
+}
