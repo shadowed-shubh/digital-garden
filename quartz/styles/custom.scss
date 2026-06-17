@@ -1041,6 +1041,10 @@ body[data-slug="index"] {
     width: 100% !important;
   }
 
+  .center .article-title {
+    display: none !important;
+  }
+
   .center .popover-hint {
     max-width: none !important;
   }
@@ -1140,16 +1144,10 @@ body[data-slug="index"] {
   }
 }
 
-// Note Properties — hidden (aggressive)
+// Note Properties — hidden
 details.note-properties,
-.note-properties,
-[class*="note-properties"] {
+.note-properties {
   display: none !important;
-  visibility: hidden !important;
-  max-height: 0 !important;
-  overflow: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
 }
 
 // ── Graph: white border and edges ──
@@ -1187,4 +1185,9 @@ details.note-properties,
   width: auto !important;
   min-width: 0 !important;
   height: auto !important;
+}
+
+// ── Hide broken slider toggle ──
+.lorenz-slider-toggle {
+  display: none !important;
 }
