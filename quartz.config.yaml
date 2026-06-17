@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=./quartz/plugins/quartz-plugins.schema.json
 configuration:
-  pageTitle: Shubham's Digital Garden
+  pageTitle: Shubh's
   pageTitleSuffix: ""
   enableSPA: true
   enablePopovers: true
@@ -16,9 +16,9 @@ configuration:
     fontOrigin: googleFonts
     cdnCaching: true
     typography:
-      header: Schibsted Grotesk
-      body: Source Sans Pro
-      code: IBM Plex Mono
+      header: Space Mono
+      body: Space Mono
+      code: Space Mono
     colors:
       lightMode:
         light: "#faf8f8"
@@ -31,15 +31,15 @@ configuration:
         highlight: rgba(143, 159, 169, 0.15)
         textHighlight: "#fff23688"
       darkMode:
-        light: "#023671"
-        lightgray: "#071e2c"
-        gray: "#0a2940"
-        darkgray: "#3896ed"
+        light: "#00132f"
+        lightgray: "#000e26"
+        gray: "#001f46"
+        darkgray: "#d7e3ff"
         dark: "#0197d6"
         secondary: "#af96dc"
-        tertiary: "#af96dc"
-        highlight: rgba(175, 150, 220, 0.15)
-        textHighlight: "#af96dc44"
+        tertiary: "#9fcaff"
+        highlight: rgba(1, 151, 214, 0.15)
+        textHighlight: rgba(175, 150, 220, 0.15)
 plugins:
   - source: github:quartz-community/created-modified-date
     enabled: true
@@ -146,17 +146,17 @@ plugins:
     enabled: true
     layout:
       position: right
-      priority: 50
+      priority: 10
   - source: github:quartz-community/graph
     enabled: true
     layout:
       position: left
-      priority: 10
+      priority: 20
   - source: github:quartz-community/search
     enabled: true
     layout:
-      position: left
-      priority: 20
+      position: beforeBody
+      priority: 10
       group: toolbar
       groupOptions:
         grow: true
@@ -164,22 +164,22 @@ plugins:
     enabled: true
     layout:
       position: right
-      priority: 50
+      priority: 20
   - source: github:quartz-community/article-title
     enabled: true
     layout:
       position: beforeBody
-      priority: 10
+      priority: 20
   - source: github:quartz-community/content-meta
     enabled: true
     layout:
       position: beforeBody
-      priority: 20
+      priority: 30
   - source: github:quartz-community/tag-list
     enabled: false
     layout:
       position: beforeBody
-      priority: 30
+      priority: 40
   - source: github:quartz-community/page-title
     enabled: true
     layout:
@@ -188,14 +188,14 @@ plugins:
   - source: github:quartz-community/darkmode
     enabled: true
     layout:
-      position: left
-      priority: 30
+      position: beforeBody
+      priority: 11
       group: toolbar
   - source: github:quartz-community/reader-mode
     enabled: true
     layout:
-      position: left
-      priority: 35
+      position: beforeBody
+      priority: 12
       group: toolbar
   - source: github:quartz-community/breadcrumbs
     enabled: true

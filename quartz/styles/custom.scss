@@ -1,271 +1,428 @@
 @use "./variables.scss" as *;
 
-// ── Part 1: Color theme overrides ──
+// ── Design System Tokens ──
+:root {
+  --bg: #00132f;
+  --surface-lowest: #000e26;
+  --surface-low: #001f46;
+  --surface: #001b3f;
+  --surface-bright: #063873;
+  --on-surface: #d7e3ff;
+  --on-surface-variant: #bec8d1;
+  --primary: #0197d6;
+  --secondary: #af96dc;
+  --tertiary: #9fcaff;
+  --outline: rgba(62, 72, 80, 0.1);
+  --glass-bg: rgba(0, 27, 63, 0.7);
+  --glass-border: rgba(1, 151, 214, 0.1);
+  --glow: rgba(1, 151, 214, 0.15);
+  
+  --font-mono: 'Iosevka', monospace;
+}
+
+// ── Global Overrides ──
 [saved-theme="dark"] {
   body {
-    background-color: #023671 !important;
-    color: #3896ed !important;
+    background-color: var(--bg) !important;
+    color: var(--on-surface) !important;
+    font-family: var(--font-mono) !important;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    color: #0197d6 !important;
+    color: var(--primary) !important;
+    font-family: var(--font-mono) !important;
+    font-weight: 600;
   }
 
   a {
-    color: #af96dc !important;
+    color: var(--secondary) !important;
+    text-decoration: none;
+    transition: color 0.2s ease;
     &:hover {
-      color: #c4b3e8 !important;
+      color: var(--tertiary) !important;
     }
   }
 
-  // Unified Container Styles
-  .graph-outer,
-  .global-graph-container,
-  .explorer,
-  .toc,
-  .search .search-popup,
-  pre,
-  code,
-  .callout,
-  .note-properties,
-  blockquote {
-    background-color: #071e2c !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    border: 1px solid #0a2940 !important;
-    border-radius: 8px !important;
-  }
+  // Typography scale
+  .display-lg { font-size: 56px; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; }
+  .headline-lg { font-size: 32px; font-weight: 600; line-height: 1.2; }
+  .headline-md { font-size: 24px; font-weight: 600; line-height: 1.3; }
+  .headline-sm { font-size: 20px; font-weight: 600; line-height: 1.4; }
+  .body-lg { font-size: 18px; font-weight: 400; line-height: 1.6; }
+  .body-md { font-size: 16px; font-weight: 400; line-height: 1.6; }
+  .label-md { font-size: 14px; font-weight: 500; line-height: 1; text-transform: uppercase; letter-spacing: 0.05em; }
+}
 
-  .explorer, .toc, .graph-outer {
-    padding: 1rem;
+// ── Glassmorphism Mixin ──
+@mixin glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+}
+
+@mixin glow-hover {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  &:hover {
+    box-shadow: 0 0 20px 0 var(--glow);
   }
 }
 
-// ── Part 2: Homepage layout ──
+// ── Shared Component Styles ──
+.glass-panel {
+  @include glass;
+  border-radius: 1.5rem;
+}
+
+// ── Part 1: Homepage Layout (3-Column) ──
 body[data-slug="index"] {
   .page {
     max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
   }
 
   #quartz-body {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      "gh gh"
-      "gc gc"
-      "gl gr"
-      "gf gf";
-    column-gap: 3rem;
+    grid-template-columns: 3fr 6fr 3fr;
+    grid-template-areas: "left center right";
+    gap: 2rem;
+    align-items: start;
 
-    & > .page-header {
-      grid-area: gh;
-      margin-top: 2rem;
-      .page-title { display: none; }
-      .flex-component[data-group="toolbar"] {
-        justify-content: center;
-        width: 100%;
-      }
+    & > .sidebar.left {
+      grid-area: left;
+      position: sticky;
+      top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
     }
 
     & > .center {
-      grid-area: gc;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    & > .sidebar.left {
-      grid-area: gl;
-      display: block;
-      position: relative;
-      height: auto;
-      padding: 0;
-      .graph-outer { height: 500px; }
+      grid-area: center;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      max-width: 100%;
     }
 
     & > .sidebar.right {
-      grid-area: gr;
-      display: block;
+      grid-area: right;
+      position: sticky;
+      top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+  }
+
+  // LEFT COLUMN: Branding + Graph
+  .sidebar.left {
+    .page-title {
+      font-size: 56px !important;
+      font-weight: 700 !important;
+      line-height: 1.1;
+      color: var(--on-surface) !important;
+      margin: 0;
+      &::after {
+        content: "DIGITAL GARDEN";
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        color: var(--primary);
+        margin-top: 0.5rem;
+      }
+      a { color: inherit !important; }
+    }
+
+    .graph-outer {
+      @include glass;
+      @include glow-hover;
+      border-radius: 1.5rem;
+      aspect-ratio: 1 / 1;
+      height: auto !important;
+      width: 100%;
       position: relative;
-      height: auto;
-      padding: 0;
+      overflow: hidden;
       
-      // Remove duplicate components that might be here
-      .page-title, .flex-component[data-group="toolbar"] {
-        display: none !important;
+      &::before {
+        content: "LIVE_GRAPH";
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        z-index: 10;
+        background: rgba(175, 150, 220, 0.1);
+        color: var(--secondary);
+        padding: 0.2rem 0.6rem;
+        border-radius: 9999px;
+        font-size: 10px;
+        font-weight: 600;
+        border: 1px solid rgba(175, 150, 220, 0.2);
+      }
+    }
+  }
+
+  // CENTER COLUMN: Search/Toggle Bar + Banner + Content
+  .center {
+    .page-header {
+      // translucent rounded bar for Search + Toggle
+      @include glass;
+      border-radius: 9999px;
+      padding: 0.5rem 1.5rem;
+      margin-bottom: 0;
+      
+      .flex-component[data-group="toolbar"] {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+      }
+
+      .search {
+        flex-grow: 1;
+        #search-button {
+          background: transparent;
+          border: none;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          color: var(--on-surface-variant);
+          font-family: var(--font-mono);
+          &::before {
+            content: "search";
+            font-family: 'Material Symbols Outlined';
+            font-size: 20px;
+          }
+        }
+      }
+    }
+
+    .index-banner {
+      width: 100%;
+      height: 300px;
+      border-radius: 1.5rem;
+      object-fit: cover;
+      @include glass;
+    }
+
+    article {
+      @include glass;
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      
+      .index-heading {
+        display: none; // redundant with left branding? Mockup shows article card starting with content
+      }
+    }
+  }
+
+  // RIGHT COLUMN: Explorer
+  .sidebar.right {
+    .explorer {
+      @include glass;
+      @include glow-hover;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      
+      button#explorer {
+        color: var(--primary);
+        font-family: var(--font-mono);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-content: space-between;
+        
+        &::before {
+          content: "folder_open";
+          font-family: 'Material Symbols Outlined';
+          margin-right: 0.5rem;
+          font-size: 20px;
+        }
+        
+        &::after {
+          content: "expand_more";
+          font-family: 'Material Symbols Outlined';
+          font-size: 18px;
+          opacity: 0.5;
+        }
+      }
+      
+      .folder-icon {
+        display: inline-block;
+        width: 1.2rem;
+        &::before {
+          content: "folder";
+          font-family: 'Material Symbols Outlined';
+          font-size: 16px;
+          vertical-align: middle;
+          margin-right: 4px;
+          color: var(--secondary);
+        }
+        svg { display: none; } // hide default svgs
+      }
+      
+      #explorer-content {
+        max-height: 500px;
+        overflow-y: auto;
+        
+        ul {
+          list-style: none;
+          padding-left: 1rem;
+          border-left: 1px solid var(--outline);
+        }
+        
+        li > a {
+          font-size: 14px;
+          color: var(--on-surface-variant);
+          &:hover { color: var(--secondary); }
+          &::before {
+            content: "description";
+            font-family: 'Material Symbols Outlined';
+            font-size: 14px;
+            vertical-align: middle;
+            margin-right: 6px;
+            opacity: 0.5;
+          }
+        }
+      }
+
+      &::after {
+        content: "SYS_STATUS: ONLINE\aLOC: PUNE_IN\aUPTIME: 99.9%";
+        display: block;
+        white-space: pre;
+        font-size: 10px;
+        color: var(--on-surface-variant);
+        opacity: 0.5;
+        margin-top: 1.5rem;
+        border-top: 1px solid var(--outline);
+        padding-top: 1rem;
+      }
+    }
+  }
+}
+
+// ── Components Refinement ──
+
+// Tags / Chips
+.tags a, .tag-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.8rem;
+  background: rgba(175, 150, 220, 0.08) !important;
+  color: var(--secondary) !important;
+  border: 1px solid rgba(175, 150, 220, 0.2) !important;
+  border-radius: 9999px !important;
+  font-size: 12px !important;
+  font-weight: 500;
+  margin: 0.2rem;
+  
+  &::before {
+    content: "#";
+    font-weight: 700;
+    margin-right: 2px;
+  }
+  
+  &:hover {
+    background: rgba(175, 150, 220, 0.15) !important;
+    border-color: var(--secondary) !important;
+  }
+}
+
+// Code Blocks
+pre {
+  background: var(--surface-lowest) !important;
+  border-radius: 1rem !important;
+  border: 1px solid var(--outline) !important;
+  padding: 1.5rem !important;
+}
+
+code {
+  font-family: var(--font-mono) !important;
+  background: var(--surface-lowest) !important;
+}
+
+// Search Popup
+.search .search-popup {
+  @include glass;
+  border-radius: 1.5rem;
+  background: rgba(0, 14, 38, 0.9) !important;
+  
+  #search-container {
+    input {
+      background: var(--surface-low);
+      border: 1px solid var(--outline);
+      border-radius: 0.75rem;
+      color: var(--on-surface);
+      font-family: var(--font-mono);
+    }
+  }
+}
+
+// ── Mobile Responsiveness ──
+@media all and ($mobile) {
+  body[data-slug="index"] {
+    #quartz-body {
+      grid-template-columns: 1fr;
+      grid-template-areas: 
+        "center"
+        "left"
+        "right";
+    }
+    
+    .sidebar.left .page-title {
+      font-size: 40px !important;
+    }
+    
+    .center article {
+      padding: 1.5rem;
+    }
+  }
+}
+
+// Ensure Lorenz background is always behind
+#lorenz-canvas {
+  z-index: -1 !important;
+}
+
+// ── Graph Component Styling ──
+.graph-outer {
+  svg {
+    line { // Edges
+      stroke: var(--primary) !important;
+      stroke-opacity: 0.3 !important;
+      filter: drop-shadow(0 0 2px var(--primary));
+    }
+    
+    circle { // Nodes
+      fill: var(--tertiary) !important;
+      
+      &.node-active { // Current page node
+        fill: var(--primary) !important;
+        r: 6 !important;
+        filter: drop-shadow(0 0 5px var(--primary));
+        animation: pulse 2s infinite;
+      }
+      
+      &.node-linked { // Connected nodes
+        fill: var(--secondary) !important;
       }
     }
     
-    & > footer { grid-area: gf; }
-  }
-
-  // Banner styling
-  .index-banner {
-    grid-area: gc;
-    width: 100%;
-    height: 350px;
-    object-fit: cover;
-    border-radius: 12px;
-    margin: 1rem auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #071e2c 0%, #0a2940 100%);
-    border: 1px solid #0a2940;
-    position: relative;
-    overflow: hidden;
-
-    &::after {
-      content: "Garden Banner Placeholder";
-      color: #1e4d7a;
-      font-family: var(--headerFont);
-      font-size: 1.2rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-  }
-
-  // Centered heading
-  .index-heading {
-    text-align: center;
-    font-size: 3.5rem !important;
-    color: #0197d6 !important;
-    margin: 1rem 0 3rem !important;
-    font-weight: 800;
-    width: 100%;
-  }
-
-  @media all and ($mobile) {
-    #quartz-body {
-      grid-template-columns: 1fr;
-      grid-template-areas: "gh" "gc" "gl" "gr" "gf";
-    }
-    .index-heading { font-size: 2.5rem !important; }
-  }
-}
-
-// ── Part 3: Lorenz Background Slider ──
-.lorenz-controls {
-  position: fixed;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1100; // Increased to ensure it's above everything
-  display: flex;
-  align-items: center;
-  pointer-events: none;
-
-  .controls-handle {
-    width: 32px;
-    height: 64px;
-    background: rgba(7, 30, 44, 0.9);
-    border: 1px solid #0a2940;
-    border-right: none;
-    border-radius: 8px 0 0 8px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: auto;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(8px);
-    opacity: 0.6;
-    
-    &::after {
-      content: "⟨";
-      color: #af96dc;
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
-
-    &:hover {
-      opacity: 1;
-      width: 40px;
-      background: #071e2c;
-    }
-  }
-
-  .controls-panel {
-    width: 0;
-    height: auto;
-    overflow: hidden;
-    background: #071e2c;
-    border: 1px solid #0a2940;
-    border-right: none;
-    border-radius: 12px 0 0 12px;
-    padding: 0;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    pointer-events: auto;
-    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.6);
-  }
-
-  &.active .controls-panel,
-  &:hover .controls-panel {
-    width: 260px;
-    padding: 1.5rem;
-  }
-
-  &.active .controls-handle,
-  &:hover .controls-handle {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .control-group {
-    margin-bottom: 1.2rem;
-    &:last-child { margin-bottom: 0; }
-    
-    label {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      color: #0197d6;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-    }
-    
-    input[type="range"] {
-      width: 100%;
-      height: 6px;
-      background: #0a2940;
-      border-radius: 3px;
-      outline: none;
-      accent-color: #af96dc;
-      cursor: pointer;
-    }
-    
-    .value-display {
-      font-family: var(--codeFont);
-      font-size: 0.75rem;
-      color: #3896ed;
-      background: rgba(56, 150, 237, 0.1);
-      padding: 0.1rem 0.4rem;
-      border-radius: 4px;
+    text {
+      font-family: var(--font-mono) !important;
+      fill: var(--on-surface-variant) !important;
+      font-size: 10px !important;
     }
   }
 }
 
-@media all and ($mobile) {
-  .lorenz-controls {
-    top: auto;
-    bottom: 2rem;
-    right: 1rem;
-    transform: none;
-    
-    .controls-handle {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      border-right: 1px solid #0a2940;
-      opacity: 0.9;
-      &::after { content: "⚙"; }
-    }
-    
-    &.active .controls-panel {
-      width: 280px;
-      position: fixed;
-      bottom: 6rem;
-      right: 1rem;
-      border-radius: 12px;
-      border-right: 1px solid #0a2940;
-    }
-  }
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
 }
