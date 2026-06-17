@@ -5,7 +5,7 @@ tags:
   - index
 ---
 
-<img src="" alt="Garden Banner" class="index-banner" />
+<img src="./banner.png" alt="Garden Banner" class="index-banner" />
 
 <h1 class="index-heading">Shubh's Digital Garden</h1>
 

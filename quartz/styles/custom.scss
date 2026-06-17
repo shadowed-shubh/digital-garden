@@ -12,13 +12,29 @@
   --primary: #0197d6;
   --secondary: #af96dc;
   --tertiary: #9fcaff;
-  --outline: rgba(62, 72, 80, 0.1);
+  --outline: #00336d; // Crisp solid blue border outline
   --glass-bg: rgba(0, 27, 63, 0.7);
   --glass-border: rgba(1, 151, 214, 0.1);
   --glow: rgba(1, 151, 214, 0.15);
   
   --font-mono: 'Iosevka', monospace;
 }
+
+#quartz-root {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+#lorenz-canvas {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+}
+
 
 // ── Global Overrides ──
 [saved-theme="dark"] {
@@ -77,6 +93,7 @@ body[data-slug="index"] {
   #quartz-body {
     display: grid;
     grid-template-columns: 280px 1fr 240px;
+    grid-template-areas: "left center right";
     gap: 3rem;
     align-items: start;
 
@@ -87,6 +104,9 @@ body[data-slug="index"] {
       gap: 2.5rem;
       position: relative !important;
       top: 0 !important;
+      width: 100%;
+      min-width: 0;
+      overflow: hidden;
     }
 
     & > .center {
@@ -95,6 +115,7 @@ body[data-slug="index"] {
       flex-direction: column;
       gap: 2.5rem;
       max-width: 100%;
+      min-width: 0;
     }
 
     & > .sidebar.right {
@@ -104,6 +125,9 @@ body[data-slug="index"] {
       gap: 2.5rem;
       position: relative !important;
       top: 0 !important;
+      width: 100%;
+      min-width: 0;
+      overflow: hidden;
     }
   }
 
@@ -156,7 +180,7 @@ body[data-slug="index"] {
       backdrop-filter: none !important;
     }
 
-    .flex-component[data-group="toolbar"] {
+    .flex-component {
       position: absolute;
       top: 2rem;
       right: 2rem;
@@ -171,7 +195,7 @@ body[data-slug="index"] {
       padding: 0 !important;
       
       .search {
-        #search-button {
+        .search-button {
           background: transparent !important;
           border: none !important;
           box-shadow: none !important;
@@ -187,6 +211,7 @@ body[data-slug="index"] {
             font-family: 'Material Symbols Outlined';
             font-size: 20px;
           }
+          svg, p { display: none; }
         }
       }
 
@@ -201,7 +226,7 @@ body[data-slug="index"] {
         justify-content: center;
       }
 
-      .reader-mode {
+      .readermode {
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
@@ -253,7 +278,7 @@ body[data-slug="index"] {
       border-radius: 0 !important;
       padding: 1.5rem;
       
-      button#explorer {
+      .explorer-toggle.desktop-explorer {
         color: var(--primary);
         font-family: var(--font-mono);
         text-transform: uppercase;
@@ -284,21 +309,20 @@ body[data-slug="index"] {
         }
       }
       
-      .folder-icon {
-        display: inline-block;
-        width: 1.2rem;
+      .folder-container {
+        display: flex;
+        align-items: center;
         &::before {
           content: "folder";
           font-family: 'Material Symbols Outlined';
           font-size: 16px;
-          vertical-align: middle;
           margin-right: 4px;
           color: var(--secondary);
         }
-        svg { display: none; }
+        .folder-icon { display: none; }
       }
       
-      #explorer-content {
+      .explorer-content {
         max-height: 500px;
         overflow-y: auto;
         
@@ -331,6 +355,45 @@ body[data-slug="index"] {
 }
 
 // ── Components Refinement (Global Flat Rects) ──
+
+// Note Properties flat overrides
+.note-properties {
+  border: 1px solid var(--outline) !important;
+  border-radius: 0 !important;
+  background: var(--surface) !important;
+  box-shadow: none !important;
+
+  .note-properties-header {
+    border-bottom-color: var(--outline) !important;
+    color: var(--on-surface) !important;
+    font-family: var(--font-mono) !important;
+    font-size: 14px !important;
+  }
+  
+  .note-properties-row {
+    border-bottom: 1px solid var(--outline) !important;
+    &:last-child {
+      border-bottom: none !important;
+    }
+  }
+
+  .note-properties-key {
+    color: var(--primary) !important;
+    font-family: var(--font-mono) !important;
+    border-right: 1px solid var(--outline) !important;
+  }
+
+  .note-properties-value {
+    color: var(--on-surface) !important;
+  }
+
+  .note-properties-tags .tag-link {
+    border-radius: 0 !important;
+    background: rgba(175, 150, 220, 0.08) !important;
+    color: var(--secondary) !important;
+    border: 1px solid rgba(175, 150, 220, 0.2) !important;
+  }
+}
 
 // Tags / Chips
 .tags a, .tag-link {
