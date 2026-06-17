@@ -9,6 +9,8 @@ tags:
 
 <h1 class="index-heading">Shubh's Digital Garden</h1>
 
+<div class="index-content-box">
+
 Hi, my name is Shubham (aka Shubh). I'm an undergraduate Computer Science student from Pune, India.
 
 Welcome to my digital garden—a place where I collect ideas, document what I'm learning, and explore the endless conversations happening inside my head. This garden serves as both a notebook and a playground, helping me visualize thoughts, connect concepts, and refine ideas over time.
@@ -55,3 +57,5 @@ This garden should not include raw journal entries, private people context, dail
 Curated from the private Obsidian vault at `/home/shubh/second brain`.
 
 Feel free to wander around.
+
+</div>

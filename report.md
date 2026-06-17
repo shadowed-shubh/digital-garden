@@ -1,157 +1,134 @@
-# Digital Garden — Session Report
+# Repository Report: Digital Garden (Quartz v5)
 
-## Goal
-Set up and customize a **Quartz v5** digital garden website from an Obsidian vault, then implement a **color theme**, **custom homepage layout**, and **interactive Lorenz-attractor animated background** component.
+This repository hosts a highly customized personal digital garden built with **Quartz v5.0.0** (a TypeScript-based static site generator for Markdown notes). The notes are curated from a private Obsidian vault, formatted using an immersive terminal-like design system, and deployed via GitHub Actions to GitHub Pages.
 
-## State Before This Session
-- Repository cloned from `shadowed-shubh/digital-garden` but had no upstream history (fresh `main` branch with 174 files)
-- Content symlinked from `~/second brain/garden/`
-- Had run `npx quartz create -t default` once
-- GitHub Actions workflow for GitHub Pages existed
-- Wikilinks still used `[[garden/X]]` format (needed `[[X]]` for clean URLs)
+---
 
-## Step 1 — Restructure Git Repo
+## 🏗️ Repository Architecture
 
-- Nuked old git history with `git checkout --orphan` on main, created fresh `main` branch
-- Removed and re-added remote to `shadowed-shubh/digital-garden`
-- Pushed with `--force --set-upstream`
+Below is the directory structure highlighting key files and their purposes:
 
-**Files changed:**
-- `.git/config` — remote URL set to `git@github.com:shadowed-shubh/digital-garden.git`
+* **[quartz.config.yaml](file:///home/shubh/dev/digital-garden/quartz.config.yaml)**: Configuration file detailing general settings (title, base URL, SPA routing, popovers) and the sequential plugin pipeline.
+* **[DESIGN.md](file:///home/shubh/dev/digital-garden/DESIGN.md)**: Visual styling guidelines for the "Deep Harbor Garden" theme (navy/cyan/lavender palette, Space Mono headers, Geist content).
+* **[quartz/styles/custom.scss](file:///home/shubh/dev/digital-garden/quartz/styles/custom.scss)**: Core stylesheet applying custom glassmorphic properties, the three-column dashboard layout, custom SVG graph styling, and interactive glows.
+* **[plugins/lorenz-background/](file:///home/shubh/dev/digital-garden/plugins/lorenz-background)**: Custom local Quartz plugin that imports and registers the interactive canvas component.
+* **[quartz/components/LorenzBackground.tsx](file:///home/shubh/dev/digital-garden/quartz/components/LorenzBackground.tsx)**: Preact component containing client-side canvas logic for drawing a simulated Lorenz attractor.
+* **[content/](file:///home/shubh/dev/digital-garden/content)**: Folder containing 28 public-safe Markdown pages organized into conceptual subdirectories.
+* **[.github/workflows/deploy.yml](file:///home/shubh/dev/digital-garden/.github/workflows/deploy.yml)**: Continuous Integration workflow automating production builds and deployments to GitHub Pages.
 
-## Step 2 — Wikilink Rewrite
+### Processing Workflow Diagram
 
-- All `[[garden/X]]` references in markdown content rewritten to `[[X]]`
-- Ran `find content/ -name '*.md' -exec sed -i 's/\[\[garden\//[[/g' {} +`
+```mermaid
+graph TD
+    classDef file fill:#001b3f,stroke:#0197d6,stroke-width:2px,color:#d7e3ff;
+    classDef proc fill:#063873,stroke:#9fcaff,stroke-width:1px,color:#d7e3ff;
+    classDef output fill:#000e26,stroke:#af96dc,stroke-width:2px,color:#bec8d1;
 
-## Step 3 — Theme Colors (`quartz.config.yaml`)
+    Markdown[Markdown Vault content/ ]:::file --> Parse[Parse Markdown quartz/processors/parse.ts]:::proc
+    Parse --> Filter[Filter Notes quartz/processors/filter.ts]:::proc
+    Filter --> Emit[Emit Page quartz/processors/emit.ts]:::proc
+    
+    Config[quartz.config.yaml & plugins/]:::file -. Load Config .-> Parse
+    Styles[custom.scss & base.scss]:::file -. Compile Sass .-> Emit
+    Lorenz[Lorenz Background Canvas Component]:::file -. Inject Scripts .-> Emit
 
-Set dark-mode palette:
-
-| Token | Value |
-|-------|-------|
-| `light` | `#023671` |
-| `lightgray` | `#071e2c` |
-| `gray` | `#1e4d7a` |
-| `darkgray` | `#3896ed` |
-| `dark` | `#0197d6` |
-| `secondary` | `#af96dc` |
-| `tertiary` | `#c4b3e8` |
-| `highlight` | `rgba(175, 150, 220, 0.15)` |
-| `textHighlight` | `#af96dc44` |
-
-Light mode left untouched (Quartz defaults).
-
-## Step 4 — Custom SCSS (`quartz/styles/custom.scss`)
-
-- Dark-mode container overrides: `background-color: #071e2c`, `box-shadow`, `border-color` for `.graph-outer`, `.explorer`, `.toc`, `.search .search-popup`, `pre`, `code`, `.callout`, `.note-properties`, `blockquote`
-- `.graph-outer` / `.explorer` / `.toc` get `border: 1px solid #0a2940; border-radius: 6px`
-- **Homepage grid** (`body[data-slug="index"]`):
-  - `#quartz-body` becomes 2-column grid (`grid-template-columns: 1fr 1fr`) with center spanning full width
-  - Center area: `max-width: 960px`, centered, `padding: 1rem 2rem`
-  - Left (Explorer): `grid-area: grid-left`, `max-height: 400px`, scroll overflow hidden
-  - Right (Graph): `grid-area: grid-right`, `max-height: 400px`, overflow hidden
-  - `.index-banner`: full-width, `max-height: 300px`, `object-fit: cover`
-  - `.index-heading`: centered, `color: #0197d6`, `font-size: 2.5rem`
-  - **Mobile** `@media all and ($mobile)`: collapses to single-column stacking
-
-## Step 5 — `is-index` Condition (`quartz/plugins/loader/conditions.ts`)
-
-Added `is-index` built-in condition:
-```ts
-"is-index": (props) => props.fileData.slug === "index",
+    Emit --> HTML[Static Web Pages public/ ]:::output
 ```
 
-This enables `condition: is-index` in YAML to restrict components to the homepage.
+---
 
-## Step 6 — Lorenz Attractor Plugin (`plugins/lorenz-background/`)
+## 🎨 Design System: Deep Harbor Garden
 
-### Key Decision: Plugin Location
-Local plugin source lives at `plugins/lorenz-background/` (NOT `.quartz/plugins/lorenz-background/`) to avoid a **circular symlink bug** in `quartz/plugins/loader/gitLoader.ts:installPlugin()` — when source path is inside `.quartz/plugins/`, the symlink resolves to itself, corrupting the entire plugin cache.
+The design blends technical documentation style with late-night terminal aesthetics (referred to as the "Control Panel" philosophy).
 
-### Architecture
-The component is a **precompiled JS module** because Quartz v5's `componentLoader.ts` uses Node.js `import()` at runtime (not esbuild), so `.ts`/`.scss` source files cannot be dynamically imported.
+### Color Palette & Variables
+Implemented inside [custom.scss](file:///home/shubh/dev/digital-garden/quartz/styles/custom.scss), the design system includes:
+* **Background (`--bg` / `#00132f`)**: Nocturnal navy base.
+* **Surface Container (`--surface` / `#001b3f`)**: Near-black navy for cards, code blocks, and panels.
+* **Primary Accent (`--primary` / `#0197d6`)**: Technical cyan-blue for headings and active states.
+* **Secondary Accent (`--secondary` / `#af96dc`)**: Soft lavender-purple indicating links, tags, and connections.
+* **Text (`--on-surface` / `#d7e3ff`)**: High-contrast, reading-friendly light blue-gray.
 
-#### Build Chain
-Hand-compiled outputs:
-1. `src/lorenz.scss` → `dist/components/styles/lorenz.css` (2624 bytes, minified)
-2. `src/lorenz.inline.ts` → `dist/scripts/lorenz.inline.js` (4052 bytes, minified, browser-safe IIFE)
-3. `dist/components/LorenzBackground.js` — preact/jsx-runtime JSX component with CSS and script as string constants
+### Typography
+* **Space Mono** (and Iosevka): Used for structural elements, headers, metadata, buttons, code block tags, and status text.
+* **Geist** / Default UI: Used for long-form reading in note content to minimize reading fatigue.
 
-#### Runtime behavior
-- Renders `<canvas id="lorenz-canvas">`, `<div class="lorenz-overlay">`, and slider panel in every page's `afterBody` slot
-- `36` points in the Lorenz attractor simulation, new point added every `6` frames
-- **RK4 integration** for the Lorenz system (σ, ρ, β)
-- Color cycles through 8-color pink/magenta palette
-- Glow effect via `shadowBlur`
-- **Mouse nudge**: cursor position perturbs the attractor path
-- **Random parameters per load**: σ=8–12, ρ=25–35, β=2–3.5, speed=4–10
-- **Slider panel** (right edge): σ (6–16), ρ (15–45), β (1.5–4), Speed (1–20)
-- **Mobile**: slider opens as a drawer-style overlay instead of hover-reveal
-
-#### Files
-
-| File | Purpose |
-|------|---------|
-| `plugins/lorenz-background/package.json` | Quartz manifest, `category: "component"`, exports `LorenzBackground` |
-| `dist/components/LorenzBackground.js` | Main component (JSX → preact) with `css` and `afterDOMLoaded` static props |
-| `dist/components/index.js` | Re-exports `LorenzBackground` as default |
-| `dist/scripts/lorenz.inline.js` | Browser animation loop IIFE (canvas setup, RK4, palette, mouse, sliders) |
-| `dist/components/styles/lorenz.css` | Minified CSS for wrapper, canvas, overlay, slider panel/tab, mobile breakpoint |
-| `dist/util/lang.js` | `classNames()` helper |
-| `dist/i18n/index.js` | i18n stub (required by Quartz component convention) |
-| `dist/i18n/locales/en-US.js` | English locale stub |
-
-### YAML Registration (`quartz.config.yaml:233`)
-```yaml
-- source: ./plugins/lorenz-background
-  enabled: true
-  layout:
-    position: afterBody
-    priority: 1
+### Dashboard Grid Layout
+When rendering the home page (`index.md`), Quartz adjusts the grid to a customized 3-column layout:
+```mermaid
+graph LR
+    subgraph Homepage Grid
+        A[Left Sidebar: Title / Branding / SVG Graph] --- B[Center: Search-Toggle Bar / Banner / Article Card]
+        B --- C[Right Sidebar: Directory Explorer / System Status]
+    end
 ```
 
-This places the Lorenz canvas at the lowest priority in `afterBody`, so content renders above it.
+---
 
-### CSS Placement
-`LorenzBackground.css = style` — injected as a `<style>` tag in the page `<head>` by Quartz's CSS infrastructure. The canvas wrapper uses `position: fixed; inset: 0; z-index: -1; pointer-events: none` so it sits behind all content but is non-interfering.
+## 🌪️ Lorenz Attractor Background
 
-### Script Placement
-`LorenzBackground.afterDOMLoaded = inlineScript` — injected into the page's `afterDOMLoaded` script bundle, executed after DOM content is ready.
+The repository contains a custom local plugin [lorenz-background](file:///home/shubh/dev/digital-garden/plugins/lorenz-background/index.ts) which injects the interactive [LorenzBackground.tsx](file:///home/shubh/dev/digital-garden/quartz/components/LorenzBackground.tsx) component.
 
-## Build Output
-- `npx quartz build` produces **208 files** in `public/`
-- Zero warnings, no errors
-- Lorenz HTML appears in every page's `<div class="page-footer">`
-- Inline script bundled at `/static/scripts/script-2-36596967.js`
+> [!NOTE]
+> The **Lorenz attractor** is a system of three ordinary differential equations that displays chaotic behavior when solved for specific parameters.
 
-## Remaining / Next Steps
+### Integrator Mechanics
+In the client-side script (`afterDOMLoaded`), the component simulates the chaotic system using a fourth-order Runge-Kutta (`rk4`) numerical solver:
+$$\frac{dx}{dt} = \sigma(y - x)$$
+$$\frac{dy}{dt} = x(\rho - z) - y$$
+$$\frac{dz}{dt} = xy - \beta z$$
 
-1. **Create `content/index.md`** with banner image markup and heading — the CSS classes `.index-banner` and `.index-heading` are styled but have no matching markup yet
-2. **Visual verification** — run `npx quartz build --serve` and inspect at `http://localhost:8080/digital-garden/`
-3. **Verify homepage layout** — the CSS grid reorder for `body[data-slug="index"]` should show Graph (moved from right sidebar) and Explorer (moved from left sidebar) in two columns below the center content
-4. **GitHub Pages deploy** — push to `main` triggers Actions; verify at `https://shadowed-shubh.github.io/digital-garden/`
-5. **Confirm slider panel works** on both desktop (hover reveal) and mobile (click toggle)
+### Interactive Elements
+1. **Interactive Control Panel**: A floating drawer toggleable via a handle. Users can manually shift values for Sigma ($\sigma$), Rho ($\rho$), Beta ($\beta$), and Speed with sliders.
+2. **Mouse Responsiveness**: The equations adjust dynamically based on the mouse coordinates relative to the screen size (modulates the effective $\rho$ and $\sigma$).
+3. **Motion Trails**: The canvas draws lines that fade slowly into the background color (`#023671` at 8% opacity) rather than clearing the canvas instantly, producing glowing trails.
+4. **Color Cycles**: The line colors cycle smoothly through a custom palette `["#f55cad", "#39161f", "#e4467a", "#e79ba8", "#872e4d"]` using linear interpolation (`lerp`).
 
-## Critical Context for Claude
+---
 
-### Circular Symlink Bug
-`installPlugin()` in `gitLoader.ts` calls `fs.symlinkSync(sourcePath, installPath)` — if `sourcePath` is inside `.quartz/plugins/` and `installPath` is also `.quartz/plugins/<name>`, the symlink resolves to itself. The fix is to keep local plugin source **outside** `.quartz/plugins/`, e.g., at `plugins/lorenz-background/`.
+## 📝 Content Vault Structure
 
-### Runtime Import Constraint
-`componentLoader.ts:loadComponentsFromPackage()` uses `import()` at Node.js runtime. The imported module must:
-- Be plain `.js` (no TypeScript)
-- Have all imports resolvable by Node.js (including `preact/jsx-runtime` and local utils with `.js` extension)
-- Export a default `QuartzComponentConstructor` (a function returning a component function)
+The site contains **28 markdown files** organized under `content/` to split notes into clean conceptual boundaries:
 
-### Plugin-Only YAML Entry
-A plugin entry with only `source`/`enabled` but no `layout` will be silently loaded but never placed on any page. The `layout` block with `position`/`priority` is required for the component to render.
+| Folder | Pages count | Content Focus |
+| :--- | :---: | :--- |
+| **[content/projects/](file:///home/shubh/dev/digital-garden/content/projects)** | 10 | Completed/active projects (AI Companion in Go, Rust Unix Shell, Real-Time Audio Visualizer, RAG Assistant, Svelte Blog, etc.). |
+| **[content/learning/](file:///home/shubh/dev/digital-garden/content/learning)** | 12 | Trackers/notes on skills like Go, Rust, Machine Learning, Signal Processing, Linux Systems, and Quantum Computing. |
+| **[content/ideas/](file:///home/shubh/dev/digital-garden/content/ideas)** | 2 | Rough thoughts/concepts in progress (e.g. Hyprland phone integration). |
+| **[content/meta/](file:///home/shubh/dev/digital-garden/content/meta)** | 1 | Meta information including the `Publishing Plan.md`. |
+| **[content/logs/](file:///home/shubh/dev/digital-garden/content/logs)** | 1 | Build logs index page. |
+| Root | 2 | Homepage ([index.md](file:///home/shubh/dev/digital-garden/content/index.md)) and [About.md](file:///home/shubh/dev/digital-garden/content/About.md). |
 
-### Component Factory Signature
-The exported default must be a factory: `(() => { const Component = (...) => ...; Component.css = ...; Component.afterDOMLoaded = ...; return Component })`. This matches `QuartzComponentConstructor = () => QuartzComponent`.
+---
 
-### `is-index` Condition
-Added as a **built-in** condition in `conditions.ts` (not custom via `registerCondition`), so it's available plugin-side without needing a `setup` hook call. Use in YAML as `condition: is-index`.
+## 🛠️ Build and Deployment Pipeline
 
-### Homepage Layout Strategy
-Quartz v5 layout groups (`byPageType.content.positions` etc.) do not support **additive** component placement — you can only clear positions with `[]`. So the homepage two-column Graph+Explorer layout is achieved via **CSS grid reorder** (`body[data-slug="index"] #quartz-body { grid-template-areas: ... }`) rather than byPageType overrides.
+Quartz utilizes standard JS tooling and custom community modules:
+* **transpiler/bundler**: `esbuild` compiles TypeScript and SCSS.
+* **CSS minifier**: `lightningcss` parses variables.
+* **Markup generation**: Unified markdown processor (`remark-parse`, `remark-rehype`, `unified`).
+* **CI/CD Workflow**: [deploy.yml](file:///home/shubh/dev/digital-garden/.github/workflows/deploy.yml) triggers on pushes to `main`. It sets up Node 22, runs `npm ci`, downloads Quartz plugins via `npx quartz plugin install`, builds static files into `public/`, and publishes them directly to GitHub Pages.
+
+---
+
+## ⚠️ Known Issues and Recommendations
+
+During analysis, two minor issues were observed:
+
+1. **Prettier Check Warnings**:
+   Running `npm run check` reports code style warnings across 8 files:
+   * [DESIGN.md](file:///home/shubh/dev/digital-garden/DESIGN.md)
+   * [quartz/components/Head.tsx](file:///home/shubh/dev/digital-garden/quartz/components/Head.tsx)
+   * [quartz/components/index.ts](file:///home/shubh/dev/digital-garden/quartz/components/index.ts)
+   * [quartz/components/LorenzBackground.tsx](file:///home/shubh/dev/digital-garden/quartz/components/LorenzBackground.tsx)
+   * [quartz/styles/custom.scss](file:///home/shubh/dev/digital-garden/quartz/styles/custom.scss)
+   * Various plugin files.
+   
+   > [!TIP]
+   > Run `npm run format` (which invokes `npx prettier . --write`) to auto-fix these formatting issues before pushing changes to remote.
+
+2. **Publishing Rules Compliance**:
+   According to [Publishing Plan.md](file:///home/shubh/dev/digital-garden/content/meta/Publishing%20Plan.md), sensitive folders (`journal/`, `people/`, `todos/`, raw journal texts) must not be published.
+   
+   > [!IMPORTANT]
+   > Ensure that the Obsidian exporter script/sync tool does not copy those folders into `/home/shubh/dev/digital-garden/content`.

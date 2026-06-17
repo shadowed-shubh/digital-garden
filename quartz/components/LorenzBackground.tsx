@@ -64,7 +64,7 @@ LorenzBackground.afterDOMLoaded = `
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
     // Initial fill with navy background
-    ctx.fillStyle = '#023671';
+    ctx.fillStyle = '#00132f';
     ctx.fillRect(0, 0, width, height);
   }
 
@@ -150,8 +150,12 @@ LorenzBackground.afterDOMLoaded = `
   }
 
   function animate() {
-    // Fading trails back to navy #023671
-    ctx.fillStyle = 'rgba(2, 54, 113, 0.08)';
+    // Reset shadow properties to prevent background fill from glowing and shifting color
+    ctx.shadowBlur = 0;
+    ctx.shadowColor = 'transparent';
+
+    // Fading trails back to navy #00132f
+    ctx.fillStyle = 'rgba(0, 19, 47, 0.0015)';
     ctx.fillRect(0, 0, width, height);
 
     rotation += 0.003;
@@ -203,3 +207,4 @@ LorenzBackground.afterDOMLoaded = `
 `
 
 export default (() => LorenzBackground) satisfies QuartzComponentConstructor
+

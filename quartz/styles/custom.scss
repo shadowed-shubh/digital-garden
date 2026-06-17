@@ -47,99 +47,92 @@
   .display-lg { font-size: 56px; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; }
   .headline-lg { font-size: 32px; font-weight: 600; line-height: 1.2; }
   .headline-md { font-size: 24px; font-weight: 600; line-height: 1.3; }
-  .headline-sm { font-size: 20px; font-weight: 600; line-height: 1.4; }
-  .body-lg { font-size: 18px; font-weight: 400; line-height: 1.6; }
-  .body-md { font-size: 16px; font-weight: 400; line-height: 1.6; }
   .label-md { font-size: 14px; font-weight: 500; line-height: 1; text-transform: uppercase; letter-spacing: 0.05em; }
 }
 
-// ── Glassmorphism Mixin ──
-@mixin glass {
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-}
-
-@mixin glow-hover {
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-  &:hover {
-    box-shadow: 0 0 20px 0 var(--glow);
-  }
+// ── Flat Panel Mixin ──
+@mixin flat-panel {
+  background: var(--surface) !important;
+  border: 1px solid var(--outline) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
 }
 
 // ── Shared Component Styles ──
 .glass-panel {
-  @include glass;
-  border-radius: 1.5rem;
+  @include flat-panel;
+  border-radius: 0 !important;
 }
 
-// ── Part 1: Homepage Layout (3-Column) ──
+// ── Part 1: Homepage Layout (Flat Dashboard Grid) ──
 body[data-slug="index"] {
   .page {
-    max-width: 1400px;
+    position: relative;
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 5rem 2rem 2rem 2rem; // generous top space for toolbar
   }
 
   #quartz-body {
     display: grid;
-    grid-template-columns: 3fr 6fr 3fr;
-    grid-template-areas: "left center right";
-    gap: 2rem;
+    grid-template-columns: 280px 1fr 240px;
+    gap: 3rem;
     align-items: start;
 
     & > .sidebar.left {
       grid-area: left;
-      position: sticky;
-      top: 2rem;
       display: flex;
       flex-direction: column;
-      gap: 2rem;
+      gap: 2.5rem;
+      position: relative !important;
+      top: 0 !important;
     }
 
     & > .center {
       grid-area: center;
       display: flex;
       flex-direction: column;
-      gap: 2rem;
+      gap: 2.5rem;
       max-width: 100%;
     }
 
     & > .sidebar.right {
       grid-area: right;
-      position: sticky;
-      top: 2rem;
       display: flex;
       flex-direction: column;
-      gap: 2rem;
+      gap: 2.5rem;
+      position: relative !important;
+      top: 0 !important;
     }
   }
 
   // LEFT COLUMN: Branding + Graph
   .sidebar.left {
     .page-title {
-      font-size: 56px !important;
+      font-size: 48px !important; // Large display line
       font-weight: 700 !important;
       line-height: 1.1;
       color: var(--on-surface) !important;
       margin: 0;
+      text-align: left;
+      
       &::after {
-        content: "DIGITAL GARDEN";
+        content: "Digital-Garden"; // Second line
         display: block;
-        font-size: 14px;
+        font-size: 20px;
         font-weight: 500;
-        letter-spacing: 0.2em;
+        letter-spacing: normal;
         color: var(--primary);
-        margin-top: 0.5rem;
+        margin-top: 0.25rem;
+        text-transform: none;
       }
       a { color: inherit !important; }
     }
 
     .graph-outer {
-      @include glass;
-      @include glow-hover;
-      border-radius: 1.5rem;
+      @include flat-panel;
+      border-radius: 0 !important;
       aspect-ratio: 1 / 1;
       height: auto !important;
       width: 100%;
@@ -147,48 +140,48 @@ body[data-slug="index"] {
       overflow: hidden;
       
       &::before {
-        content: "LIVE_GRAPH";
-        position: absolute;
-        top: 1rem;
-        left: 1rem;
-        z-index: 10;
-        background: rgba(175, 150, 220, 0.1);
-        color: var(--secondary);
-        padding: 0.2rem 0.6rem;
-        border-radius: 9999px;
-        font-size: 10px;
-        font-weight: 600;
-        border: 1px solid rgba(175, 150, 220, 0.2);
+        display: none !important; // remove LIVE_GRAPH badge
       }
     }
   }
 
-  // CENTER COLUMN: Search/Toggle Bar + Banner + Content
+  // CENTER COLUMN: Toolbar (Top Right) + Banner Placeholder + Content
   .center {
     .page-header {
-      // translucent rounded bar for Search + Toggle
-      @include glass;
-      border-radius: 9999px;
-      padding: 0.5rem 1.5rem;
-      margin-bottom: 0;
-      
-      .flex-component[data-group="toolbar"] {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        width: 100%;
-      }
+      background: none !important;
+      border: none !important;
+      padding: 0 !important;
+      margin-bottom: 0 !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+    }
 
+    .flex-component[data-group="toolbar"] {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 1.25rem;
+      z-index: 100;
+      background: none !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      
       .search {
-        flex-grow: 1;
         #search-button {
-          background: transparent;
-          border: none;
+          background: transparent !important;
+          border: none !important;
+          box-shadow: none !important;
           display: flex;
           align-items: center;
           gap: 0.5rem;
-          color: var(--on-surface-variant);
-          font-family: var(--font-mono);
+          color: var(--on-surface-variant) !important;
+          font-family: var(--font-mono) !important;
+          font-size: 14px;
+          cursor: pointer;
           &::before {
             content: "search";
             font-family: 'Material Symbols Outlined';
@@ -196,46 +189,85 @@ body[data-slug="index"] {
           }
         }
       }
+
+      .darkmode {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: var(--on-surface-variant) !important;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .reader-mode {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: var(--on-surface-variant) !important;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     }
 
     .index-banner {
       width: 100%;
-      height: 300px;
-      border-radius: 1.5rem;
+      height: 250px;
+      border: 1px solid var(--outline) !important;
+      background-color: var(--surface) !important;
       object-fit: cover;
-      @include glass;
+      border-radius: 0 !important; // flat rectangle
+      display: block;
+      margin-bottom: 0;
     }
 
     article {
-      @include glass;
-      border-radius: 1.5rem;
-      padding: 2.5rem;
+      background: none !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      backdrop-filter: none !important;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
       
       .index-heading {
-        display: none; // redundant with left branding? Mockup shows article card starting with content
+        display: none;
       }
+    }
+
+    .index-content-box {
+      @include flat-panel;
+      border-radius: 0 !important;
+      padding: 2.5rem;
     }
   }
 
   // RIGHT COLUMN: Explorer
   .sidebar.right {
     .explorer {
-      @include glass;
-      @include glow-hover;
-      border-radius: 1.5rem;
+      @include flat-panel;
+      border-radius: 0 !important;
       padding: 1.5rem;
       
       button#explorer {
         color: var(--primary);
         font-family: var(--font-mono);
         text-transform: uppercase;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.05em;
         font-weight: 600;
         margin-bottom: 1rem;
         display: flex;
         align-items: center;
         width: 100%;
         justify-content: space-between;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
         
         &::before {
           content: "folder_open";
@@ -263,7 +295,7 @@ body[data-slug="index"] {
           margin-right: 4px;
           color: var(--secondary);
         }
-        svg { display: none; } // hide default svgs
+        svg { display: none; }
       }
       
       #explorer-content {
@@ -292,31 +324,23 @@ body[data-slug="index"] {
       }
 
       &::after {
-        content: "SYS_STATUS: ONLINE\aLOC: PUNE_IN\aUPTIME: 99.9%";
-        display: block;
-        white-space: pre;
-        font-size: 10px;
-        color: var(--on-surface-variant);
-        opacity: 0.5;
-        margin-top: 1.5rem;
-        border-top: 1px solid var(--outline);
-        padding-top: 1rem;
+        display: none !important; // Remove status block
       }
     }
   }
 }
 
-// ── Components Refinement ──
+// ── Components Refinement (Global Flat Rects) ──
 
 // Tags / Chips
 .tags a, .tag-link {
   display: inline-flex;
   align-items: center;
-  padding: 0.2rem 0.8rem;
+  padding: 0.2rem 0.6rem;
   background: rgba(175, 150, 220, 0.08) !important;
   color: var(--secondary) !important;
   border: 1px solid rgba(175, 150, 220, 0.2) !important;
-  border-radius: 9999px !important;
+  border-radius: 0 !important; // flat rectangle
   font-size: 12px !important;
   font-weight: 500;
   margin: 0.2rem;
@@ -336,7 +360,7 @@ body[data-slug="index"] {
 // Code Blocks
 pre {
   background: var(--surface-lowest) !important;
-  border-radius: 1rem !important;
+  border-radius: 0 !important; // flat rectangle
   border: 1px solid var(--outline) !important;
   padding: 1.5rem !important;
 }
@@ -344,19 +368,21 @@ pre {
 code {
   font-family: var(--font-mono) !important;
   background: var(--surface-lowest) !important;
+  border-radius: 0 !important;
 }
 
 // Search Popup
 .search .search-popup {
-  @include glass;
-  border-radius: 1.5rem;
-  background: rgba(0, 14, 38, 0.9) !important;
+  background: rgba(0, 14, 38, 0.95) !important;
+  border: 1px solid var(--outline) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
   
   #search-container {
     input {
       background: var(--surface-low);
       border: 1px solid var(--outline);
-      border-radius: 0.75rem;
+      border-radius: 0 !important;
       color: var(--on-surface);
       font-family: var(--font-mono);
     }
@@ -366,19 +392,41 @@ code {
 // ── Mobile Responsiveness ──
 @media all and ($mobile) {
   body[data-slug="index"] {
+    .page {
+      padding: 4rem 1rem 1rem 1rem !important;
+    }
+
     #quartz-body {
-      grid-template-columns: 1fr;
-      grid-template-areas: 
-        "center"
-        "left"
-        "right";
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 2.5rem !important;
     }
     
+    .sidebar.left, .center, .sidebar.right {
+      display: contents !important;
+    }
+
+    .page-title {
+      order: 1 !important;
+    }
+    .index-banner {
+      order: 2 !important;
+    }
+    .graph-outer {
+      order: 3 !important;
+    }
+    .index-content-box {
+      order: 4 !important;
+    }
+    .explorer {
+      order: 5 !important;
+    }
+
     .sidebar.left .page-title {
-      font-size: 40px !important;
+      font-size: 36px !important;
     }
     
-    .center article {
+    .index-content-box {
       padding: 1.5rem;
     }
   }
