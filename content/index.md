@@ -1,17 +1,10 @@
----
-title: Shubham's Digital Garden
-tags:
-  - garden
-  - index
----
 
 <img src="./banner.png" alt="Garden Banner" class="index-banner" />
 
-<h1 class="index-heading">Shubh's Digital Garden</h1>
 
 <div class="index-content-box">
 
-Hi, my name is Shubham (aka Shubh). I'm an undergraduate Computer Science student from Pune, India.
+Hi, my name is Shubham (aka Shubh). I'm an undergraduate Computer Science student from [[Pune, India.]]
 
 Welcome to my digital garden—a place where I collect ideas, document what I'm learning, and explore the endless conversations happening inside my head. This garden serves as both a notebook and a playground, helping me visualize thoughts, connect concepts, and refine ideas over time.
 
@@ -32,25 +25,6 @@ I've also spent time exploring graphic design and digital art, particularly thro
 As a person, I would describe myself as curious, social, and empathetic. Philosophically, I lean toward agnosticism and nihilism, though I'm always open to questioning my beliefs. I love music, and you'll rarely find me without headphones on or listening to something through my Sony Walkman.
 
 I hope this digital garden gives you a glimpse into how I think, what I care about, and the things I'm currently exploring.
-
-## Start Here
-
-- [[About|About]]
-- [[projects/index|Projects]]
-- [[ideas/index|Ideas]]
-- [[learning/index|Skills and Learning]]
-- [[logs/index|Build Logs]]
-- [[meta/Publishing Plan|Publishing Plan]]
-
-## Current Focus
-
-- Learning Go by building a local AI companion project.
-- Building a custom Unix-like shell in Rust.
-- Strengthening backend, systems, Linux, and local AI fundamentals.
-
-## Private/Public Boundary
-
-This garden should not include raw journal entries, private people context, daily todos, or sensitive self notes. If something starts in the private vault, it should be rewritten here as a public-safe technical note.
 
 ## Source Vault
 

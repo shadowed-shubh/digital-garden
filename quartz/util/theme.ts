@@ -178,23 +178,6 @@ export function joinStyles(theme: Theme, ...stylesheet: string[]) {
 ${stylesheet.join("\n\n")}
 
 :root {
-  --light: ${theme.colors.lightMode.light};
-  --lightgray: ${theme.colors.lightMode.lightgray};
-  --gray: ${theme.colors.lightMode.gray};
-  --darkgray: ${theme.colors.lightMode.darkgray};
-  --dark: ${theme.colors.lightMode.dark};
-  --secondary: ${theme.colors.lightMode.secondary};
-  --tertiary: ${theme.colors.lightMode.tertiary};
-  --highlight: ${theme.colors.lightMode.highlight};
-  --textHighlight: ${theme.colors.lightMode.textHighlight};
-
-  --titleFont: "${getFontSpecificationName(theme.typography.title || theme.typography.header)}", ${DEFAULT_SANS_SERIF};
-  --headerFont: "${getFontSpecificationName(theme.typography.header)}", ${DEFAULT_SANS_SERIF};
-  --bodyFont: "${getFontSpecificationName(theme.typography.body)}", ${DEFAULT_SANS_SERIF};
-  --codeFont: "${getFontSpecificationName(theme.typography.code)}", ${DEFAULT_MONO};
-}
-
-:root[saved-theme="dark"] {
   --light: ${theme.colors.darkMode.light};
   --lightgray: ${theme.colors.darkMode.lightgray};
   --gray: ${theme.colors.darkMode.gray};
@@ -204,80 +187,12 @@ ${stylesheet.join("\n\n")}
   --tertiary: ${theme.colors.darkMode.tertiary};
   --highlight: ${theme.colors.darkMode.highlight};
   --textHighlight: ${theme.colors.darkMode.textHighlight};
-}
 
-:root {
-  /* Surface colors */
-  --background-primary: var(--light);
-  --background-primary-alt: var(--light);
-  --background-secondary: var(--lightgray);
-  --background-secondary-alt: var(--lightgray);
-  --background-modifier-border: var(--lightgray);
-  --background-modifier-border-hover: var(--gray);
-  --background-modifier-border-focus: var(--secondary);
+  --titleFont: "${getFontSpecificationName(theme.typography.title || theme.typography.header)}", ${DEFAULT_SANS_SERIF};
+  --headerFont: "${getFontSpecificationName(theme.typography.header)}", ${DEFAULT_SANS_SERIF};
+  --bodyFont: "${getFontSpecificationName(theme.typography.body)}", ${DEFAULT_SANS_SERIF};
+  --codeFont: "${getFontSpecificationName(theme.typography.code)}", ${DEFAULT_MONO};
 
-  /* Text colors */
-  --text-normal: var(--darkgray);
-  --text-muted: var(--gray);
-  --text-faint: var(--gray);
-  --text-accent: var(--secondary);
-  --text-accent-hover: var(--tertiary);
-  --text-on-accent: var(--light);
-  --text-on-accent-inverted: var(--dark);
-  --text-highlight-bg: var(--textHighlight);
-
-  /* Interactive */
-  --interactive-normal: var(--light);
-  --interactive-hover: var(--lightgray);
-  --interactive-accent: var(--secondary);
-  --interactive-accent-hover: var(--tertiary);
-
-  /* Base scale */
-  --color-base-00: var(--light);
-  --color-base-05: var(--light);
-  --color-base-10: var(--light);
-  --color-base-20: var(--lightgray);
-  --color-base-25: var(--lightgray);
-  --color-base-30: var(--lightgray);
-  --color-base-35: var(--lightgray);
-  --color-base-40: var(--gray);
-  --color-base-50: var(--gray);
-  --color-base-60: var(--gray);
-  --color-base-70: var(--darkgray);
-  --color-base-100: var(--dark);
-
-  /* Font aliases */
-  --font-text: var(--bodyFont);
-  --font-monospace: var(--codeFont);
-  --font-interface: var(--bodyFont);
-
-  /* Nav/sidebar */
-  --nav-item-color: var(--darkgray);
-  --nav-item-color-hover: var(--dark);
-  --nav-item-color-active: var(--secondary);
-  --nav-item-background-hover: var(--lightgray);
-  --nav-item-background-active: var(--highlight);
-
-  /* Tags */
-  --tag-background: var(--highlight);
-  --tag-color: var(--secondary);
-  --tag-background-hover: var(--lightgray);
-
-  /* Misc */
-  --icon-color: var(--darkgray);
-  --icon-color-hover: var(--dark);
-  --icon-color-active: var(--secondary);
-  --divider-color: var(--lightgray);
-  --link-color: var(--secondary);
-  --link-color-hover: var(--tertiary);
-
-  /* Accent HSL (computed from secondary) */
-  --accent-h: ${hexToHsl(theme.colors.lightMode.secondary).h};
-  --accent-s: ${hexToHsl(theme.colors.lightMode.secondary).s}%;
-  --accent-l: ${hexToHsl(theme.colors.lightMode.secondary).l}%;
-}
-
-:root[saved-theme="dark"] {
   /* Surface colors */
   --background-primary: var(--light);
   --background-primary-alt: var(--light);

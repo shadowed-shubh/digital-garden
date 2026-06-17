@@ -51,7 +51,7 @@ LorenzBackground.afterDOMLoaded = `
   let rho = 28 + Math.random() * 7;
   let beta = 2.66 + Math.random() * 0.5;
   let x = 0.1, y = 0.1, z = 0.1;
-  let dt = 0.005;
+  let dt = 0.015;
   let speedMultiplier = 1.0;
   
   let mouseX = 0.5, mouseY = 0.5;
@@ -155,11 +155,11 @@ LorenzBackground.afterDOMLoaded = `
     ctx.shadowColor = 'transparent';
 
     // Fading trails back to navy #00132f
-    ctx.fillStyle = 'rgba(0, 19, 47, 0.0015)';
+    ctx.fillStyle = 'rgba(0, 19, 47, 0.008)';
     ctx.fillRect(0, 0, width, height);
 
     rotation += 0.003;
-    const steps = Math.ceil(40 * speedMultiplier); // Increased point density
+    const steps = Math.ceil(2 * speedMultiplier); // Elegant thin strands
     const innerDt = dt * speedMultiplier;
 
     const rhoEff = rho + (mouseY - 0.5) * 8;
@@ -170,15 +170,13 @@ LorenzBackground.afterDOMLoaded = `
       const next = rk4(x, y, z, innerDt, sigmaEff, rhoEff, beta);
       x = next.x; y = next.y; z = next.z;
 
-      // Projection with slow rotation
+      // Centered rotation on x-y horizontal plane, vertical projection on centered z axis
       const project = (px, py, pz) => {
-        const rx = px * Math.cos(rotation) - pz * Math.sin(rotation);
-        const rz = px * Math.sin(rotation) + pz * Math.cos(rotation);
-        // Scale to fit nicely
-        const scale = Math.min(width, height) / 70;
+        const rx = px * Math.cos(rotation) - py * Math.sin(rotation);
+        const scale = Math.min(width, height) / 50;
         return {
           cx: width / 2 + rx * scale,
-          cy: height / 2 + (py - 25) * scale
+          cy: height / 2 - (pz - 25) * scale
         };
       };
 
@@ -193,8 +191,8 @@ LorenzBackground.afterDOMLoaded = `
       ctx.lineTo(p2.cx, p2.cy);
       
       ctx.strokeStyle = color;
-      ctx.lineWidth = 2.5; // Increased line width
-      ctx.shadowBlur = 12; // Increased glow
+      ctx.lineWidth = 1.5; // Elegant thin stroke
+      ctx.shadowBlur = 6;  // Subtle glowing halo
       ctx.shadowColor = color;
       ctx.stroke();
     }
@@ -207,4 +205,5 @@ LorenzBackground.afterDOMLoaded = `
 `
 
 export default (() => LorenzBackground) satisfies QuartzComponentConstructor
+
 
